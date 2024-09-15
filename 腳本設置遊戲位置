@@ -1,0 +1,32 @@
+--// Defined
+
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/Library.lua"))()
+local GameId = game.GameId
+
+--// Tables
+
+local Games = {
+    { name = "Rivals", gameid = 6035872082, link = "https://raw.githubusercontent.com/dementiaenjoyer/homohack/main/rivals.lua" },
+    { name = "Phantom Forces", gameid = 113491250, link = "https://raw.githubusercontent.com/dementiaenjoyer/homohack/main/homohack.lua"},
+    { name = "Phantom Forces Test Place", gameid = 115272207, link = "https://raw.githubusercontent.com/dementiaenjoyer/homohack/main/homohack.lua" },
+    { name = "Project Delta", gameid = 7336302630, link = "https://raw.githubusercontent.com/ewenja/Project-Delta-hub/main/Project%20Delta"},
+    { name = "Project Delta", gameid = 7336302630, link = "https://raw.githubusercontent.com/ewenja/Project-Delta-hub/main/%E9%80%9A%E7%94%A8%E9%81%8A%E6%88%B2%E8%85%B3%E6%9C%AC"},
+}
+
+function Fetch(URL)
+    return game:HttpGet(tostring(URL))
+end
+
+--// Rest
+
+for _, Supported in Games do
+    if Supported.gameid == GameId then
+        Library:Notify(`嗨嗨Hub測試版 偵測到特定遊戲啟動.`, 5)
+
+        loadstring(Fetch(Supported.link))()
+        return "loaded regular"
+    end
+end
+
+Library:Notify("沒有特定遊戲所以載入通用script")
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ewenja/roblox-hub/main/roblox%20script%20%E5%97%A8%E5%97%A8hub",true))()
