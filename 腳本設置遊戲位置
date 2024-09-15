@@ -9,8 +9,8 @@ local Games = {
     { name = "Rivals", gameid = 6035872082, link = "https://raw.githubusercontent.com/dementiaenjoyer/homohack/main/rivals.lua" },
     { name = "Phantom Forces", gameid = 113491250, link = "https://raw.githubusercontent.com/dementiaenjoyer/homohack/main/homohack.lua"},
     { name = "Phantom Forces Test Place", gameid = 115272207, link = "https://raw.githubusercontent.com/dementiaenjoyer/homohack/main/homohack.lua" },
-    { name = "Project Delta", gameid = 7336302630, link = "https://raw.githubusercontent.com/ewenja/Project-Delta-hub/main/Project%20Delta"},
-    { name = "Project Delta", gameid = 7336302630, link = "https://raw.githubusercontent.com/ewenja/Project-Delta-hub/main/%E9%80%9A%E7%94%A8%E9%81%8A%E6%88%B2%E8%85%B3%E6%9C%AC"},
+    { name = "Project Delta", gameid = 2862098693, link = "https://raw.githubusercontent.com/ewenja/Project-Delta-hub/main/Project%20Delta"},
+    { name = "Project Delta", gameid = 2862098693, link = "https://raw.githubusercontent.com/ewenja/Project-Delta-hub/main/%E9%80%9A%E7%94%A8%E9%81%8A%E6%88%B2%E8%85%B3%E6%9C%AC"},
 }
 
 function Fetch(URL)
