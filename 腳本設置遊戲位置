@@ -2,15 +2,18 @@
 
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/Library.lua"))()
 local GameId = game.GameId
+print("當前遊戲的 GameId: " .. tostring(GameId))
 
 --// Tables
 
 local Games = {
     { name = "Rivals", gameid = 6035872082, link = "https://raw.githubusercontent.com/dementiaenjoyer/homohack/main/rivals.lua" },
-    { name = "Phantom Forces", gameid = 113491250, link = "https://raw.githubusercontent.com/dementiaenjoyer/homohack/main/homohack.lua"},
+    { name = "Phantom Forces", gameid = 113491250, link = "https://raw.githubusercontent.com/dementiaenjoyer/homohack/main/homohack.lua" },
     { name = "Phantom Forces Test Place", gameid = 115272207, link = "https://raw.githubusercontent.com/dementiaenjoyer/homohack/main/homohack.lua" },
-    { name = "Project Delta", gameid = 2862098693, link = "https://raw.githubusercontent.com/ewenja/Project-Delta-hub/main/Project%20Delta"},
-    { name = "Project Delta", gameid = 2862098693, link = "https://raw.githubusercontent.com/ewenja/Project-Delta-hub/main/%E9%80%9A%E7%94%A8%E9%81%8A%E6%88%B2%E8%85%B3%E6%9C%AC"},
+    { name = "Project Delta", gameid = 2862098693, link = "https://raw.githubusercontent.com/ewenja/Project-Delta-hub/main/Project%20Delta" },
+    { name = "Project Delta Alt", gameid = 2862098693, link = "https://raw.githubusercontent.com/ewenja/Project-Delta-hub/main/%E9%80%9A%E7%94%A8%E9%81%8A%E6%88%B2%E8%85%B3%E6%9C%AC" },
+    { name = "Counter Blox: Source 2", gameid = 6424008530, link = "https://raw.githubusercontent.com/ewenja/Project-Delta-hub/main/cs:go" }, -- 修正的 gameid
+    { name = "Murder Mystery 2", gameid = 66654135, link = "https://raw.githubusercontent.com/ewenja/Project-Delta-hub/refs/heads/main/mm2"},
 }
 
 function Fetch(URL)
@@ -20,13 +23,17 @@ end
 --// Rest
 
 for _, Supported in Games do
+    print("嘗試匹配遊戲: " .. Supported.name .. " | gameid: " .. tostring(Supported.gameid)) -- 調試輸出
+
     if Supported.gameid == GameId then
-        Library:Notify(`嗨嗨Hub測試版 偵測到特定遊戲啟動.`, 5)
+        print("匹配到遊戲: " .. Supported.name) -- 調試輸出
+        Library:Notify("嗨嗨Hub測試版 偵測到特定遊戲啟動: " .. Supported.name, 5)
 
         loadstring(Fetch(Supported.link))()
         return "loaded regular"
     end
 end
 
-Library:Notify("沒有特定遊戲所以載入通用script")
-loadstring(game:HttpGet("https://raw.githubusercontent.com/ewenja/roblox-hub/main/roblox%20script%20%E5%97%A8%E5%97%A8hub",true))()
+Library:Notify("沒有偵測到特定遊戲，載入通用script", 5)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ewenja/roblox-hub/main/roblox%20script%20%E5%97%A8%E5%97%A8hub", true))()
+return "Loaded general script"
