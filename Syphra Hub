@@ -1,0 +1,34 @@
+local DrRayLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/AZYsGithub/DrRay-UI-Library/main/DrRay.lua"))()
+
+local window = DrRayLibrary:Load("string", "Default")
+
+local tab = DrRayLibrary.newTab("Custommovesets", "ImageIdHere")
+
+tab.newButton("Atomic to sukuna", "has quotes and also plays judas when actiavte ult and itself has cool vfx", function()
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/zyrask/Nexus-Base/main/atomic-blademaster%20to%20sukuna"))()
+    print('Hello!')
+
+end)
+
+tab.newButton("Saitama to gojo", "coolest gojjo youve ever seen in ult jump and use hollow purple for variant then for second ult variant be low and activate ult easy bye", function()
+
+--[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+_G.settings = {
+    ["RedStartupId"] = "rbxassetid://1177475221",
+    ["RedHitId"] = "rbxassetid://8625377966",
+}
+loadstring(game:HttpGet("https://raw.githubusercontent.com/skibiditoiletfan2007/BaldyToSorcerer/main/Latest.lua"))()
+    print('Hello!')
+end)
+
+tab.newButton("Garou To dio", "makes you dio with his clothes and stand i guess i didnt watch jojo yet lol but second move of garou does extra damage W", function()
+
+--[[
+	WARNING: Heads up! This script has not been verified by ScriptBlox. Use at your own risk!
+]]
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Medley-Taboritsky/RobloxScripting/refs/heads/main/DIO_Garou_TSB"))()
+    print('Hello!')
+end)
