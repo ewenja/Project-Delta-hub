@@ -21,40 +21,40 @@ function getgenv().createParticle()
     particle.Size = NumberSequence.new(0.5)
     particle.LightEmission = 0.7
     particle.Transparency = NumberSequence.new(0.5)
-    table.insert(particleEmitters, attachment)
+    table.insert(getgenv().particleEmitters, attachment)
 end
 
 function getgenv().initializeVFXCircle()
-    for _ = 1, circleCount do
-        createParticle()
+    for _ = 1, getgenv().circleCount do
+        getgenv().createParticle()
     end
 end
 
 function getgenv().clearVFXCircle()
-    for _, attachment in ipairs(particleEmitters) do
+    for _, attachment in ipairs(getgenv().particleEmitters) do
         attachment:Destroy()
     end
-    particleEmitters = {}
+    getgenv().particleEmitters = {}
 end
 
 function getgenv().updateVFXCircle()
     local currentAngle = 0
-    while VFXEnabled do
+    while getgenv().VFXEnabled do
         local char = game.Players.LocalPlayer.Character
         local root = char and char:FindFirstChild("HumanoidRootPart")
         if root then
             local pos = root.Position
-            currentAngle += rotationSpeed
-            for i, attachment in ipairs(particleEmitters) do
-                local angle = math.rad(i * (360 / circleCount) + currentAngle)
-                local x = circleRadius * math.cos(angle)
-                local z = circleRadius * math.sin(angle)
-                attachment.Position = pos + Vector3.new(x, circleHeight, z)
+            currentAngle += getgenv().rotationSpeed
+            for i, attachment in ipairs(getgenv().particleEmitters) do
+                local angle = math.rad(i * (360 / getgenv().circleCount) + currentAngle)
+                local x = getgenv().circleRadius * math.cos(angle)
+                local z = getgenv().circleRadius * math.sin(angle)
+                attachment.Position = pos + Vector3.new(x, getgenv().circleHeight, z)
             end
         end
-        task.wait(updateInterval)
+        task.wait(getgenv().updateInterval)
     end
-    clearVFXCircle()
+    getgenv().clearVFXCircle()
 end
 
 -- 閃電效果
@@ -63,10 +63,14 @@ function getgenv().createZigzagLightning(startPos, endPos)
     for i = 1, segments do
         local nextPos = (i == segments and endPos) or (current + ((endPos - current) / segments) + Vector3.new(math.random(-3, 3), math.random(-3, -1), math.random(-3, 3)))
         local part = Instance.new("Part", workspace)
-        part.Anchored, part.CanCollide, part.Transparency = true, false, 1
+        part.Anchored = true
+        part.CanCollide = false
+        part.Transparency = 1
 
-        local a0 = Instance.new("Attachment", part) a0.WorldPosition = current
-        local a1 = Instance.new("Attachment", part) a1.WorldPosition = nextPos
+        local a0 = Instance.new("Attachment", part)
+        a0.WorldPosition = current
+        local a1 = Instance.new("Attachment", part)
+        a1.WorldPosition = nextPos
 
         local beam = Instance.new("Beam", part)
         beam.Attachment0 = a0
@@ -98,18 +102,18 @@ function getgenv().getGround(pos)
 end
 
 function getgenv().toggleLightningEffect(state)
-    lightningEnabled = state
+    getgenv().lightningEnabled = state
     if state then
         task.spawn(function()
-            while lightningEnabled do
-                task.wait(math.random(0, 0.1))
+            while getgenv().lightningEnabled do
+                task.wait(math.random())
                 local char = game.Players.LocalPlayer.Character
                 local root = char and char:FindFirstChild("HumanoidRootPart")
                 if root then
                     local start = root.Position + Vector3.new(math.random(-10, 10), math.random(5, 15), math.random(-10, 10))
-                    local ground = getGround(start)
+                    local ground = getgenv().getGround(start)
                     if ground then
-                        createZigzagLightning(start, ground)
+                        getgenv().createZigzagLightning(start, ground)
                     end
                 end
             end
@@ -117,11 +121,11 @@ function getgenv().toggleLightningEffect(state)
     end
 end
 
--- 拖尾
+-- 拖尾效果
 function getgenv().createPersonalTrail()
     local char = game.Players.LocalPlayer.Character
     local root = char and char:WaitForChild("HumanoidRootPart")
-    while personalTrailEnabled do
+    while getgenv().personalTrailEnabled do
         local params = RaycastParams.new()
         params.FilterType = Enum.RaycastFilterType.Blacklist
         params.FilterDescendantsInstances = {char}
@@ -130,7 +134,7 @@ function getgenv().createPersonalTrail()
             local attach = Instance.new("Attachment", ray.Instance)
             attach.WorldPosition = ray.Position
             local p = Instance.new("ParticleEmitter", attach)
-            p.Texture = selectedVFXID
+            p.Texture = getgenv().selectedVFXID
             p.Rate = 50
             p.Lifetime = NumberRange.new(0.5, 1)
             p.Speed = NumberRange.new(3)
