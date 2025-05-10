@@ -1,15 +1,17 @@
---vfx
-local VFXEnabled = false
-local circleRadius = 10
-local circleHeight = -2
-local circleCount = 110
-local updateInterval = 0.03
-local rotationSpeed = 15
-local particleEmitters = {}
-local selectedVFXID = "rbxassetid://5833235272" -- 火焰粒子
+-- 全域參數
+getgenv().VFXEnabled = false
+getgenv().circleRadius = 10
+getgenv().circleHeight = -2
+getgenv().circleCount = 110
+getgenv().updateInterval = 0.03
+getgenv().rotationSpeed = 15
+getgenv().particleEmitters = {}
+getgenv().selectedVFXID = "rbxassetid://5833235272"
+getgenv().personalTrailEnabled = false
+getgenv().lightningEnabled = false
 
--- 建立粒子
-local function createParticle()
+-- 粒子效果
+function getgenv().createParticle()
     local attachment = Instance.new("Attachment", workspace.Terrain)
     local particle = Instance.new("ParticleEmitter", attachment)
     particle.Texture = "rbxassetid://373435404"
@@ -22,23 +24,20 @@ local function createParticle()
     table.insert(particleEmitters, attachment)
 end
 
--- 初始化粒子環
-local function initializeVFXCircle()
+function getgenv().initializeVFXCircle()
     for _ = 1, circleCount do
         createParticle()
     end
 end
 
--- 清除粒子
-local function clearVFXCircle()
+function getgenv().clearVFXCircle()
     for _, attachment in ipairs(particleEmitters) do
         attachment:Destroy()
     end
     particleEmitters = {}
 end
 
--- 更新粒子環繞位置
-local function updateVFXCircle()
+function getgenv().updateVFXCircle()
     local currentAngle = 0
     while VFXEnabled do
         local char = game.Players.LocalPlayer.Character
@@ -53,13 +52,13 @@ local function updateVFXCircle()
                 attachment.Position = pos + Vector3.new(x, circleHeight, z)
             end
         end
-        wait(updateInterval)
+        task.wait(updateInterval)
     end
     clearVFXCircle()
 end
 
--- 雷電效果
-local function createZigzagLightning(startPos, endPos)
+-- 閃電效果
+function getgenv().createZigzagLightning(startPos, endPos)
     local segments, current, beamParts = 10, startPos, {}
     for i = 1, segments do
         local nextPos = (i == segments and endPos) or (current + ((endPos - current) / segments) + Vector3.new(math.random(-3, 3), math.random(-3, -1), math.random(-3, 3)))
@@ -90,21 +89,20 @@ local function createZigzagLightning(startPos, endPos)
     end
 end
 
-local function getGround(pos)
-    local ray = workspace:Raycast(pos, Vector3.new(0, -50, 0), RaycastParams.new({
-        FilterType = Enum.RaycastFilterType.Blacklist,
-        FilterDescendantsInstances = {game.Players.LocalPlayer.Character}
-    }))
+function getgenv().getGround(pos)
+    local params = RaycastParams.new()
+    params.FilterType = Enum.RaycastFilterType.Blacklist
+    params.FilterDescendantsInstances = {game.Players.LocalPlayer.Character}
+    local ray = workspace:Raycast(pos, Vector3.new(0, -50, 0), params)
     return ray and ray.Position or nil
 end
 
-local lightningEnabled = false
-local function toggleLightningEffect(state)
+function getgenv().toggleLightningEffect(state)
     lightningEnabled = state
     if state then
-        coroutine.wrap(function()
+        task.spawn(function()
             while lightningEnabled do
-                wait(math.random(0, 0.1))
+                task.wait(math.random(0, 0.1))
                 local char = game.Players.LocalPlayer.Character
                 local root = char and char:FindFirstChild("HumanoidRootPart")
                 if root then
@@ -115,20 +113,19 @@ local function toggleLightningEffect(state)
                     end
                 end
             end
-        end)()
+        end)
     end
 end
 
--- 地板軌跡
-local personalTrailEnabled = false
-local function createPersonalTrail()
+-- 拖尾
+function getgenv().createPersonalTrail()
     local char = game.Players.LocalPlayer.Character
     local root = char and char:WaitForChild("HumanoidRootPart")
     while personalTrailEnabled do
-        local ray = workspace:Raycast(root.Position, Vector3.new(0, -10, 0), RaycastParams.new({
-            FilterType = Enum.RaycastFilterType.Blacklist,
-            FilterDescendantsInstances = {char}
-        }))
+        local params = RaycastParams.new()
+        params.FilterType = Enum.RaycastFilterType.Blacklist
+        params.FilterDescendantsInstances = {char}
+        local ray = workspace:Raycast(root.Position, Vector3.new(0, -10, 0), params)
         if ray and ray.Instance then
             local attach = Instance.new("Attachment", ray.Instance)
             attach.WorldPosition = ray.Position
@@ -144,6 +141,6 @@ local function createPersonalTrail()
             })
             game.Debris:AddItem(attach, 1.5)
         end
-        wait(0.2)
+        task.wait(0.2)
     end
 end
